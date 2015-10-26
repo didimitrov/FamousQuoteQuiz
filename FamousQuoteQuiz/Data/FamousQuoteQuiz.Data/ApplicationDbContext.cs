@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FamousQuoteQuiz.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
         public ApplicationDbContext()
             : base("DefaultConnection")
@@ -15,6 +15,14 @@ namespace FamousQuoteQuiz.Data
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
         }
         public virtual IDbSet<Question> Questions { get; set; }
+        
+
+        public IDbSet<T> Set<T>() where T : class
+        {
+            return base.Set<T>();
+        }
+
+        public virtual IDbSet<Answer> Answers { get; set; }
  
     }
 }
