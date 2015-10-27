@@ -1,28 +1,69 @@
-﻿
-@model FamousQuoteQuiz.Models.Question
-<div class="row">
-    <div class="col col-md-4">
-        @Html.HiddenFor(m => m.Id, new { @class = "question", @id = @Model.Id })
+﻿@model FamousQuoteQuiz.Models.Question
 
-        <div class="gray-label mb10">Who Said It?</div>
+<div class="container">
+    <div class="row">           
+        <div class="col col-md-3 col col-md-offset-4  panel panel-default">
+            @Html.HiddenFor(m => m.Id, new { @class = "question", @id = @Model.Id })
+            @Html.HiddenFor(m => m.Author.Id, new { @class = "author", @id = @Model.Author.Id })
+            <div class="row">
+                <ul class="nav nav-pills nav-justified">
+                    <li role="presentation"class="active"><a href="#"><span class="glyphicon glyphicon-book"></span></a></li>
+                    <li role="presentation"><a href="#"><span class="glyphicon glyphicon-list-alt"></span></a></li>
+                </ul>
+            </div><br />
+                       
+            <div class="title">Who Said It?</div><br />
 
-        <div class="description">"@Model.Content"</div>
-
-        <div id="result_view"></div>
-       
-        <div id="answers_container">
-
-            <div>
-                @Model.Answer.AnswerText?
+            <div class="question panel-body">
+                "@Model.Content"
             </div>
-          
+            <br />
+
+            <div class="text-center" id="authors_container">
+                @Model.Author.AuthorName?
+            </div><br />
+
+            <div id="result_view" class="text-center">
+                <div class="col-sm-3 btn btn-xs btn-success" id="answer-true">Yes</div>
+                <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-danger" id="answer-false">No</div><br />
+            </div>
+
+            <div class="text-center">
+                @Html.ActionLink("Next", "Index", null, new { @class = "hiddenElement btn btn-info", @id = "btn_next" })
+            </div>
+            <br />
         </div>
-       
-            <div class="col-sm-3 btn btn-xs btn-yes" id="answer-true">Yes</div>
-            <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-no" id="answer-false">No</div>
         
     </div>
-    @*<div class="btn-wrapper">
-            @Html.ActionLink("Next", "Index", null, new { @class = "hidden_el btn btn-info", @id = "btn_next" })
-        </div>*@
 </div>
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.hiddenElement').hide();
+        });
+
+        $('.btn').click(function () {
+            var id = $(this).attr('id');
+            var questionId = $(".question").attr('id');
+            var authorId = $(".author").attr('id');
+            $.ajax({
+                url: "/Home/IsAnswerCorrect",
+                method: "POST",
+                data: { questionId: questionId, btnValue: id, authorId:authorId },
+                success: function (data) {
+                    $("#result_view").html(data);
+                    $("#authors_container").hide();
+                    $("#result_view").show();
+                    $(".hiddenElement").show();
+                }
+            });
+
+        });
+
+    </script>
+    
+
+
+}
