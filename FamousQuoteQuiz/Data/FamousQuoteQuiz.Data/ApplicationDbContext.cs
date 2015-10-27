@@ -16,13 +16,12 @@ namespace FamousQuoteQuiz.Data
         }
         public virtual IDbSet<Question> Questions { get; set; }
         
+        public virtual IDbSet<Author> Authors { get; set; }
 
         public IDbSet<T> Set<T>() where T : class
         {
             return base.Set<T>();
         }
-
-        public virtual IDbSet<Answer> Answers { get; set; }
  
     }
 }

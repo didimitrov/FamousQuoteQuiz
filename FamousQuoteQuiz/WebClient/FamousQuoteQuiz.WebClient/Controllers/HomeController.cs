@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using System.Web.UI;
 using FamousQuoteQuiz.Data.Repositories;
 using FamousQuoteQuiz.Models;
@@ -9,7 +10,6 @@ namespace FamousQuoteQuiz.WebClient.Controllers
     {
         private readonly IRepository<Question> _questionRepository;
       
-
         public HomeController( IRepository<Question> questionRepository)
         {
             this._questionRepository = questionRepository;            
@@ -17,7 +17,9 @@ namespace FamousQuoteQuiz.WebClient.Controllers
 
         public ActionResult Index()
         {
-            return View();
+           
+            var question = this._questionRepository.All().FirstOrDefault();
+            return View(question);
         }
     }
 }

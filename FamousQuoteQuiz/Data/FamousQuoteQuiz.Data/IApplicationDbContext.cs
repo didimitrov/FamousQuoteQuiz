@@ -6,7 +6,7 @@ namespace FamousQuoteQuiz.Data
 {
     interface IApplicationDbContext
     {
-        IDbSet<Answer> Answers { get; set; }
+        IDbSet<Author> Authors { get; set; }
 
         IDbSet<Question> Questions { get; set; }
 
