@@ -26,14 +26,18 @@
                         @Model.Author.AuthorName?
                     </div><br />
                 </div>
+            </div>
+
                 <div id="result_view" class="text-center">
 
                 </div>
+
                 <div id="answerOptions">
                     <div class="col-sm-3 btn btn-xs btn-success" id="true">Yes</div>
                     <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-danger" id="false">No</div><br />
                 </div>
-            </div>
+
+
             <div class="text-center">
                 @*@Html.ActionLink("Next", "Index", null, new { @class = "hiddenElement btn btn-info", @id = "btn_next" })*@
                 <input type="button" name="name" value="Next " class="hiddenElement btn btn-info" id="btn_next" />
@@ -95,15 +99,18 @@
                     $("#answerOptions").hide();
 
 
+                    $("#authors_container").hide();
+                    $(".hiddenElement").hide();
+                    $("#result_view").hide();
+
+
                 }
             });
         });
 
         $(function () {
             $("li").click(function () {
-                // remove classes from all
                 $("li").removeClass("active");
-                // add class to the one we clicked
                 $(this).addClass("active");
             });
         });
