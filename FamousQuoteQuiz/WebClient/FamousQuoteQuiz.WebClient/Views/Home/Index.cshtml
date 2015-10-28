@@ -1,46 +1,52 @@
 ﻿@model FamousQuoteQuiz.Models.Question
 
 <div class="container">
-    <div class="row">           
+    <div class="row">
         <div class="col col-md-3 col col-md-offset-4  panel panel-default">
             @Html.HiddenFor(m => m.Id, new { @class = "question", @id = @Model.Id })
             @Html.HiddenFor(m => m.Author.Id, new { @class = "author", @id = @Model.Author.Id })
             <div class="row">
                 <ul class="nav nav-pills nav-justified">
-                    <li role="presentation"class="active"><a href="#"><span class="glyphicon glyphicon-book"></span></a></li>
+                    <li role="presentation" class="active"><a href="#"><span class="glyphicon glyphicon-book"></span></a></li>
                     <li role="presentation"><a href="#"><span class="glyphicon glyphicon-list-alt"></span></a></li>
                 </ul>
             </div><br />
-                       
+
             <div class="title">Who Said It?</div><br />
 
-            <div class="question panel-body">
-                "@Model.Content"
-            </div>
-            <br />
+            <div id="result">
+                <div class="question panel-body">
+                    "@Model.Content"
+                </div>
+                <br />
 
-            <div class="text-center" id="authors_container">
-                @Model.Author.AuthorName?
-            </div><br />
+                <div class="text-center" id="authors_container">
+                    @Model.Author.AuthorName?
+                </div><br />
+            </div>
 
             <div id="result_view" class="text-center">
+
+            </div>
+            <div id="answerOptions">
                 <div class="col-sm-3 btn btn-xs btn-success" id="answer-true">Yes</div>
                 <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-danger" id="answer-false">No</div><br />
             </div>
 
             <div class="text-center">
-                @Html.ActionLink("Next", "Index", null, new { @class = "hiddenElement btn btn-info", @id = "btn_next" })
+                @*@Html.ActionLink("Next", "Index", null, new { @class = "hiddenElement btn btn-info", @id = "btn_next" })*@
+                <input type="button" name="name" value="Next " class="hiddenElement btn btn-info" id="btn_next" />
             </div>
             <br />
         </div>
-        
+
     </div>
 </div>
 
 @section scripts{
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.hiddenElement').hide();
         });
 
@@ -51,19 +57,33 @@
             $.ajax({
                 url: "/Home/IsAnswerCorrect",
                 method: "POST",
-                data: { questionId: questionId, btnValue: id, authorId:authorId },
+                data: { questionId: questionId, btnValue: id, authorId: authorId },
                 success: function (data) {
                     $("#result_view").html(data);
                     $("#authors_container").hide();
+                    $("#answerOptions").hide();
                     $("#result_view").show();
                     $(".hiddenElement").show();
                 }
             });
+        });
 
+        $('#btn_next').click(function () {
+            var questionId = $(".question").attr('id');
+            $.ajax({
+                url: "/Home/Index",
+                method: "post",
+                data: { currentQuestionId: questionId },
+                success: function (data) {
+                    $("#result").html(data);
+                    $("#authors_container").show();
+                    $("#result_view").hide();
+                    $("#answerOptions").show();
+                    $(".hiddenElement").hide();
+                 //  $('.question').attr('id', $('.newQuestion').attr('id').val);
+                }
+            });
         });
 
     </script>
-    
-
-
 }
