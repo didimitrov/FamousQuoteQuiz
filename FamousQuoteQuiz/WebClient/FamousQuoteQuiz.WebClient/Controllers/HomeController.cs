@@ -25,11 +25,10 @@ namespace FamousQuoteQuiz.WebClient.Controllers
         {
             var questionAndAuthors = this._questionRepository.All().Include("Author").FirstOrDefault();
 
-
             if (currentQuestionId != null)
             {
-                var exclude = new HashSet<int>() { };
-                exclude.Add((int)currentQuestionId);
+                var exclude = new HashSet<int>();
+                exclude.Add((int) currentQuestionId);
                 var range = Enumerable.Range(1, this._questionRepository.All().Count()).Where(i => !exclude.Contains(i));
 
                 var rand = new System.Random();
@@ -38,13 +37,11 @@ namespace FamousQuoteQuiz.WebClient.Controllers
 
                 var newQuestion = _questionRepository.All().FirstOrDefault(x => x.Id == newQuestionId);
 
-
-                return PartialView("_NextQuestionPartial",newQuestion);
-
+                //  ViewData["newId"] = newQuestionId;
+                return PartialView("_NextQuestionPartial", newQuestion);
 
             }
             return View(questionAndAuthors);
-
         }
 
         [HttpPost]
@@ -52,11 +49,30 @@ namespace FamousQuoteQuiz.WebClient.Controllers
         {
             var question = _questionRepository.All().FirstOrDefault(x => x.Id == questionId);
 
-            if (btnValue == "answer-true" )
+            if (btnValue == "true")
             {
                 if (question != null) return Content("Correct! The answer is " + question.Author.AuthorName);
             }
-            return Content("Incorrect! " + question.Author.AuthorName);
+            return Content("Wrong! Answer is: " + question.Author.AuthorName);
+
+        }
+
+        public ActionResult MultipleChoice()
+        {
+            //Random r = new Random((int) DateTime.Now.Ticks);
+
+            //var authors = _authorRepository.All().
+            //    OrderBy(h => r.Next()).Take(3);
+
+            var authors= _authorRepository.All()
+            
+                .GroupBy(a => a.Author.AuthorName)
+                .Select(g => g.FirstOrDefault())
+                .OrderBy(r => Guid.NewGuid())
+                .Take(3)
+                .ToList();
+
+            return PartialView("_MultipleChoiceAuthors", authors);
         }
 
         //public ActionResult GetNext(int currentQuestionId)

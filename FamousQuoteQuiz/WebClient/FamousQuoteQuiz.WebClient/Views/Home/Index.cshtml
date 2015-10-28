@@ -8,7 +8,7 @@
             <div class="row">
                 <ul class="nav nav-pills nav-justified">
                     <li role="presentation" class="active"><a href="#"><span class="glyphicon glyphicon-book"></span></a></li>
-                    <li role="presentation"><a href="#"><span class="glyphicon glyphicon-list-alt"></span></a></li>
+                    <li role="presentation"><a href="#" id="Multi"><span class="glyphicon glyphicon-list-alt"></span></a></li>
                 </ul>
             </div><br />
 
@@ -20,19 +20,20 @@
                 </div>
                 <br />
 
-                <div class="text-center" id="authors_container">
-                    @Model.Author.AuthorName?
-                </div><br />
-            </div>
+                @*@Html.Partial("_NextQuestionPartial")*@
+                <div id="binaryOptions">
+                    <div class="text-center" id="authors_container">
+                        @Model.Author.AuthorName?
+                    </div><br />
+                </div>
+                <div id="result_view" class="text-center">
 
-            <div id="result_view" class="text-center">
-
+                </div>
+                <div id="answerOptions">
+                    <div class="col-sm-3 btn btn-xs btn-success" id="true">Yes</div>
+                    <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-danger" id="false">No</div><br />
+                </div>
             </div>
-            <div id="answerOptions">
-                <div class="col-sm-3 btn btn-xs btn-success" id="answer-true">Yes</div>
-                <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-danger" id="answer-false">No</div><br />
-            </div>
-
             <div class="text-center">
                 @*@Html.ActionLink("Next", "Index", null, new { @class = "hiddenElement btn btn-info", @id = "btn_next" })*@
                 <input type="button" name="name" value="Next " class="hiddenElement btn btn-info" id="btn_next" />
@@ -80,8 +81,30 @@
                     $("#result_view").hide();
                     $("#answerOptions").show();
                     $(".hiddenElement").hide();
-                 //  $('.question').attr('id', $('.newQuestion').attr('id').val);
                 }
+            });
+        });
+
+        $('#Multi').one('click',function() {
+            $.ajax({
+                url: "/Home/MultipleChoice",
+                method: "get",
+                //   data: { currentQuestionId: questionId },
+                success: function(data) {
+                    $("#binaryOptions").html(data);
+                    $("#answerOptions").hide();
+
+
+                }
+            });
+        });
+
+        $(function () {
+            $("li").click(function () {
+                // remove classes from all
+                $("li").removeClass("active");
+                // add class to the one we clicked
+                $(this).addClass("active");
             });
         });
 

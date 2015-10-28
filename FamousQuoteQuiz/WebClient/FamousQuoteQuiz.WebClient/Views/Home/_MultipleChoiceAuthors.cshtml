@@ -1,0 +1,10 @@
+﻿@model List<FamousQuoteQuiz.Models.Question>
+<div class="text-center">
+    
+        @foreach (var item in Model)
+        {
+            <li>@item.Author.AuthorName</li>
+        }
+    
+   
+</div>
