@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.UI;
+using FamousQuoteQuiz.Common;
 using FamousQuoteQuiz.Data.Repositories;
 using FamousQuoteQuiz.Models;
 using FamousQuoteQuiz.WebClient.ViewModels.HomeController;
@@ -13,97 +14,79 @@ namespace FamousQuoteQuiz.WebClient.Controllers
     public class HomeController : Controller
     {
         private readonly IRepository<Question> _questionRepository;
-        private readonly IRepository<Question> _authorRepository;
+        private readonly IRepository<Author> _authorRepository;
+        private readonly RandomShuffle _shuffle;
 
-        public HomeController(IRepository<Question> questionRepository, IRepository<Question> authorRepository)
+        public HomeController(IRepository<Question> questionRepository, IRepository<Author> authorRepository, RandomShuffle shuffle)
         {
             this._questionRepository = questionRepository;
             _authorRepository = authorRepository;
+            this._shuffle = shuffle;
         }
 
-        public ActionResult Index(int? currentQuestionId)
+        public ActionResult Index()  
         {
-            var questionAndAuthors = this._questionRepository.All().Include("Author").FirstOrDefault();
-
-            if (currentQuestionId != null)
+            var model = _questionRepository.All().OrderBy(r => Guid.NewGuid()).Select(x => new QuestionViewModel()
             {
-                var exclude = new HashSet<int>();
-                exclude.Add((int) currentQuestionId);
-                var range = Enumerable.Range(1, this._questionRepository.All().Count()).Where(i => !exclude.Contains(i));
+                Author = x.Author,
+                AuthorId = x.Id,
+                Content = x.Content,
+                Id = x.Id
+            }).Take(1).FirstOrDefault();
 
-                var rand = new System.Random();
-                int index = rand.Next(1, this._questionRepository.All().Count() - exclude.Count);
-                var newQuestionId = range.ElementAt(index);
-
-                var newQuestion = _questionRepository.All().FirstOrDefault(x => x.Id == newQuestionId);
-
-                //  ViewData["newId"] = newQuestionId;
-                return PartialView("_NextQuestionPartial", newQuestion);
-
-            }
-            return View(questionAndAuthors);
+            return View( model);
         }
 
         [HttpPost]
         public ActionResult IsAnswerCorrect(string btnValue, int questionId, int authorId)
         {
             var question = _questionRepository.All().FirstOrDefault(x => x.Id == questionId);
+            var author = _authorRepository.All().SingleOrDefault(x => x.Id == authorId);
 
             if (btnValue == "true")
             {
-                if (question != null) return Content("Correct! The answer is " + question.Author.AuthorName);
+                ViewData["true"] = "Correct! The answer is " + author.AuthorName;
+                // if (question != null) return Content("Correct! The answer is " + author.AuthorName);
             }
-            return Content("Wrong! Answer is: " + question.Author.AuthorName);
+            if (btnValue=="false")
+            {
+                ViewData["false"] = "Wrong! Answer is: " + question.Author.AuthorName;
+                // return Content("Wrong! Answer is: " + question.Author.AuthorName);
+            }
 
+            return PartialView("_IsCorrectMessage");
         }
 
-        public ActionResult MultipleChoice()
+        public ActionResult MultipleChoice(int currentAuthorId)
         {
-            //Random r = new Random((int) DateTime.Now.Ticks);
-
-            //var authors = _authorRepository.All().
-            //    OrderBy(h => r.Next()).Take(3);
-
-            var authors= _authorRepository.All()
-            
-                .GroupBy(a => a.Author.AuthorName)
+            var rightAuthor = this._authorRepository.All().SingleOrDefault(x => x.Id == currentAuthorId);
+            var randomAuthors = _authorRepository
+                .All().Where(x=>x.Id!=currentAuthorId)
+                .GroupBy(a => a.AuthorName)
                 .Select(g => g.FirstOrDefault())
                 .OrderBy(r => Guid.NewGuid())
-                .Take(3)
+                .Take(2)
                 .ToList();
 
-            return PartialView("_MultipleChoiceAuthors", authors);
+            randomAuthors.Add(rightAuthor);
+            _shuffle.Shuffle(randomAuthors);
+
+            return PartialView("_MultipleChoiceAuthors", randomAuthors);
         }
 
-        //public ActionResult GetNext(int currentQuestionId)
-        //{
+        public ActionResult GetNext(int currentQuestionId)
+        {
+            var exclude = new HashSet<int>() { };
+            exclude.Add(currentQuestionId);
+            var range = Enumerable.Range(1, this._questionRepository.All().Count()).Where(i => !exclude.Contains(i));
 
-        //    var exclude = new HashSet<int>() {  };
-        //    exclude.Add(currentQuestionId);
-        //    var range = Enumerable.Range(1, this._questionRepository.All().Count()).Where(i => !exclude.Contains(i));
+            var rand = new System.Random();
+            int index = rand.Next(1, this._questionRepository.All().Count() - exclude.Count);
+            var newQuestionId = range.ElementAt(index);
 
-        //    var rand = new System.Random();
-        //    int index = rand.Next(1, this._questionRepository.All().Count() - exclude.Count);
-        //    var newQuestionId= range.ElementAt(index);
+            var newQuestion = _questionRepository.All().FirstOrDefault(x => x.Id == newQuestionId);
 
-        //    var newQuestion = _questionRepository.All().FirstOrDefault(x => x.Id == newQuestionId);
-
-        //    return PartialView("_NextQuestion", newQuestion);
-        //}
-
-
-        //[HttpPost]
-        //public ActionResult IsUserChoiseCorrect(int questionId, int authorId, bool isAnswerCorrect = true)
-        //{
-        //    var question = this._questionRepository.All()
-
-        //        .FirstOrDefault(q => q.Id == questionId);
-
-        //    isAnswerCorrect = !((question.AuthorId == authorId) ^ isAnswerCorrect);
-
-        //    var model = new Tuple<string, bool>(question.Author.AuthorName, isAnswerCorrect);
-
-        //    return PartialView("_ResultView", model);
-        //}
+            return PartialView("_NextQuestionPartial", newQuestion);
+        }
     }
 }

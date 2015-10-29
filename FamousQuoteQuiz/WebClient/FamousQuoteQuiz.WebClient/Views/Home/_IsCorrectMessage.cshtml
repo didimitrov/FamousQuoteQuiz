@@ -1,0 +1,11 @@
+﻿@model string
+
+@if (ViewData.ContainsKey("true"))
+{
+    <div class="alert alert-success" role="alert">@ViewData["true"]</div>
+}
+@if (ViewData.ContainsKey("false"))
+{  
+  <div class="alert alert-danger" role="alert">@ViewData["false"]</div>
+}
+

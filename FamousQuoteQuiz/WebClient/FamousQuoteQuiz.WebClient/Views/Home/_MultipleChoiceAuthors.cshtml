@@ -1,9 +1,14 @@
-﻿@model List<FamousQuoteQuiz.Models.Question>
+﻿@model List<FamousQuoteQuiz.Models.Author>
 <div class="text-center">
     
         @foreach (var item in Model)
         {
-            <li>@item.Author.AuthorName</li>
+            // <li>@item.AuthorName</li>
+            <p>
+                @Html.ActionLink(@item.AuthorName, "IsAnswerCorrect", new { id = item.Id }, new { @class = " btn btn-info", @id = "" })
+
+            </p>
+
         }
     
    

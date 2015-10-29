@@ -1,13 +1,13 @@
-﻿@model FamousQuoteQuiz.Models.Question
+﻿@model FamousQuoteQuiz.WebClient.ViewModels.HomeController.QuestionViewModel
 
 <div class="container">
     <div class="row">
         <div class="col col-md-3 col col-md-offset-4  panel panel-default">
             @Html.HiddenFor(m => m.Id, new { @class = "question", @id = @Model.Id })
-            @Html.HiddenFor(m => m.Author.Id, new { @class = "author", @id = @Model.Author.Id })
+            @Html.HiddenFor(m => m.Author.Id, new { @class = "authorId", @id = @Model.Author.Id })
             <div class="row">
                 <ul class="nav nav-pills nav-justified">
-                    <li role="presentation" class="active"><a href="#"><span class="glyphicon glyphicon-book"></span></a></li>
+                    <li role="presentation" class="active"><a href="#" id="Binary"><span class="glyphicon glyphicon-book"></span></a></li>
                     <li role="presentation"><a href="#" id="Multi"><span class="glyphicon glyphicon-list-alt"></span></a></li>
                 </ul>
             </div><br />
@@ -19,32 +19,30 @@
                     "@Model.Content"
                 </div>
                 <br />
-
-                @*@Html.Partial("_NextQuestionPartial")*@
-                <div id="binaryOptions">
-                    <div class="text-center" id="authors_container">
-                        @Model.Author.AuthorName?
-                    </div><br />
-                </div>
             </div>
 
-                <div id="result_view" class="text-center">
+            @*@Html.Partial("_NextQuestionPartial")*@
+                
+            <div id="binaryOptions">
+                <div class="text-center" id="authors_container">
+                    @Model.Author.AuthorName?
+                </div><br />
+            </div>
+               
+            <div id="result_view" class="text-center">
 
-                </div>
+            </div>
 
-                <div id="answerOptions">
-                    <div class="col-sm-3 btn btn-xs btn-success" id="true">Yes</div>
-                    <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-danger" id="false">No</div><br />
-                </div>
-
+            <div id="answerOptions">
+                <div class="col-sm-3 btn btn-xs btn-success" id="true">Yes</div>
+                <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-danger" id="false">No</div><br />
+            </div>
 
             <div class="text-center">
-                @*@Html.ActionLink("Next", "Index", null, new { @class = "hiddenElement btn btn-info", @id = "btn_next" })*@
-                <input type="button" name="name" value="Next " class="hiddenElement btn btn-info" id="btn_next" />
+                <input type="button" name="name" value="Next " class="hiddenElement  btn-info" id="btn_next" />
             </div>
             <br />
         </div>
-
     </div>
 </div>
 
@@ -58,7 +56,7 @@
         $('.btn').click(function () {
             var id = $(this).attr('id');
             var questionId = $(".question").attr('id');
-            var authorId = $(".author").attr('id');
+            var authorId = $(".authorId").attr('id');
             $.ajax({
                 url: "/Home/IsAnswerCorrect",
                 method: "POST",
@@ -76,8 +74,8 @@
         $('#btn_next').click(function () {
             var questionId = $(".question").attr('id');
             $.ajax({
-                url: "/Home/Index",
-                method: "post",
+                url: "/Home/GetNext", 
+                method: "post",    
                 data: { currentQuestionId: questionId },
                 success: function (data) {
                     $("#result").html(data);
@@ -89,21 +87,28 @@
             });
         });
 
-        $('#Multi').one('click',function() {
+        $('#Multi').one('click', function () {
+            var authorId = $(".authorId").attr('id');
             $.ajax({
                 url: "/Home/MultipleChoice",
-                method: "get",
-                //   data: { currentQuestionId: questionId },
+                method: "post",
+                data: { currentAuthorId: authorId },
                 success: function(data) {
                     $("#binaryOptions").html(data);
                     $("#answerOptions").hide();
-
-
                     $("#authors_container").hide();
                     $(".hiddenElement").hide();
                     $("#result_view").hide();
+                }
+            });
+        });
 
-
+        $('#Binary').one('click',function() {
+            $.ajax({
+                url: "/Home/Index",
+                method: "get",
+                success: function (data) {
+                    $('body').html(data);
                 }
             });
         });

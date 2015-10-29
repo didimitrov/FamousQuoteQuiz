@@ -181,6 +181,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\HomeController\IndexViewModel.cs" />
+    <Compile Include="ViewModels\HomeController\QuestionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -231,6 +232,7 @@
     <Content Include="Views\Home\_NextQuestionPartial.cshtml" />
     <Content Include="Views\Home\_ResultView.cshtml" />
     <Content Include="Views\Home\_MultipleChoiceAuthors.cshtml" />
+    <Content Include="Views\Home\_IsCorrectMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -244,6 +246,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\FamousQuoteQuiz.Common\FamousQuoteQuiz.Common.csproj">
+      <Project>{77F59954-2FBB-4384-A27E-1A15B3268179}</Project>
+      <Name>FamousQuoteQuiz.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Data\FamousQuoteQuiz.Data\FamousQuoteQuiz.Data.csproj">
       <Project>{6B807B76-1246-4A39-93FE-36B5E60AFFD7}</Project>
       <Name>FamousQuoteQuiz.Data</Name>

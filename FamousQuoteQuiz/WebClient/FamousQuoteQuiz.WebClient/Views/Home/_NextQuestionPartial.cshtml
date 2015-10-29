@@ -1,7 +1,7 @@
 ﻿@model FamousQuoteQuiz.Models.Question
 
 @Html.HiddenFor(m => m.Id, new { @class = "question", @id = @Model.Id })
-@Html.HiddenFor(m => m.Author.Id, new { @class = "author", @id = @Model.Author.Id })
+@Html.HiddenFor(m => m.Author.Id, new { @class = "authorId", @id = @Model.Author.Id })
 
 <div class="question panel-body">
     "@Model.Content"
@@ -11,4 +11,12 @@
 <div class="text-center" id="authors_container">
     @Model.Author.AuthorName?
 </div><br />
+
+            
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script>
+    
+</script>*@
+
             

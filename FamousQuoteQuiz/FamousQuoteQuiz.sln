@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamousQuoteQuiz.Data", "Data\FamousQuoteQuiz.Data\FamousQuoteQuiz.Data.csproj", "{6B807B76-1246-4A39-93FE-36B5E60AFFD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamousQuoteQuiz.Models", "Models\FamousQuoteQuiz.Models\FamousQuoteQuiz.Models.csproj", "{4750324B-2C11-42BE-813A-9D52818CFF73}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamousQuoteQuiz.WebClient", "WebClient\FamousQuoteQuiz.WebClient\FamousQuoteQuiz.WebClient.csproj", "{9DC53039-7177-420A-9B51-96226BA0BE4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamousQuoteQuiz.Common", "Common\FamousQuoteQuiz.Common\FamousQuoteQuiz.Common.csproj", "{77F59954-2FBB-4384-A27E-1A15B3268179}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9DC53039-7177-420A-9B51-96226BA0BE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DC53039-7177-420A-9B51-96226BA0BE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DC53039-7177-420A-9B51-96226BA0BE4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77F59954-2FBB-4384-A27E-1A15B3268179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77F59954-2FBB-4384-A27E-1A15B3268179}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77F59954-2FBB-4384-A27E-1A15B3268179}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77F59954-2FBB-4384-A27E-1A15B3268179}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
