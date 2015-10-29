@@ -1,15 +1,16 @@
 ﻿@model List<FamousQuoteQuiz.Models.Author>
 <div class="text-center">
     
-        @foreach (var item in Model)
-        {
-            // <li>@item.AuthorName</li>
-            <p>
-                @Html.ActionLink(@item.AuthorName, "IsAnswerCorrect", new { id = item.Id }, new { @class = " btn btn-info", @id = "" })
+    @foreach (var item in Model)
+    {
+        
+        <p>
+            <button id="@item.Id" class=" btn btn-default">@item.AuthorName</button>
+        </p>
+         @*<p>
+        @Html.ActionLink(@item.AuthorName, "MultipleChoiceAnswerCheck", new { id = item.Id }, new { @class = " btn btn-info", @id = "authorId-"+@item.Id })
 
-            </p>
+    </p>*@
 
-        }
-    
-   
+    }
 </div>

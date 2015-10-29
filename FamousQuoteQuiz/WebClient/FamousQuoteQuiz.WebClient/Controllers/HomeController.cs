@@ -38,19 +38,16 @@ namespace FamousQuoteQuiz.WebClient.Controllers
         }
 
         [HttpPost]
-        public ActionResult IsAnswerCorrect(string btnValue, int questionId, int authorId)
+        public ActionResult CheckBinaryAnswer(string btnValue)
         {
-            var question = _questionRepository.All().FirstOrDefault(x => x.Id == questionId);
-            var author = _authorRepository.All().SingleOrDefault(x => x.Id == authorId);
-
             if (btnValue == "true")
             {
-                ViewData["true"] = "Correct! The answer is " + author.AuthorName;
+                ViewData["true"] = "Correct!";
                 // if (question != null) return Content("Correct! The answer is " + author.AuthorName);
             }
             if (btnValue=="false")
             {
-                ViewData["false"] = "Wrong! Answer is: " + question.Author.AuthorName;
+                ViewData["false"] = "Wrong!";
                 // return Content("Wrong! Answer is: " + question.Author.AuthorName);
             }
 
@@ -84,9 +81,26 @@ namespace FamousQuoteQuiz.WebClient.Controllers
             int index = rand.Next(1, this._questionRepository.All().Count() - exclude.Count);
             var newQuestionId = range.ElementAt(index);
 
-            var newQuestion = _questionRepository.All().FirstOrDefault(x => x.Id == newQuestionId);
+            var newQuestion =
+                _questionRepository.All().Where(x => x.Id == newQuestionId).Select(x => new QuestionViewModel()
+                {
+                    Author = x.Author,
+                    AuthorId = x.Id,
+                    Content = x.Content,
+                    Id = x.Id
+                }).FirstOrDefault();
 
             return PartialView("_NextQuestionPartial", newQuestion);
         }
+
+        //public ActionResult CheckMultipleAnswer(int authorId, int questionId)
+        //{
+        //    var question = this._questionRepository.All().Where(x => x.Id == questionId).FirstOrDefault();
+        //    if (question.AuthorId==authorId)
+        //    {
+        //        return Content("Correct");
+        //    }
+        //    return Content("Wrong");
+        //}
     }
 }

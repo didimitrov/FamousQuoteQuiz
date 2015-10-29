@@ -1,6 +1,6 @@
-﻿@model FamousQuoteQuiz.Models.Question
+﻿@model FamousQuoteQuiz.WebClient.ViewModels.HomeController.QuestionViewModel
 
-@Html.HiddenFor(m => m.Id, new { @class = "question", @id = @Model.Id })
+@Html.HiddenFor(m => m.Id, new { @class = "nextquestion", @id = @Model.Id })
 @Html.HiddenFor(m => m.Author.Id, new { @class = "authorId", @id = @Model.Author.Id })
 
 <div class="question panel-body">
@@ -13,10 +13,6 @@
 </div><br />
 
             
-@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-<script>
-    
-</script>*@
+
 
             

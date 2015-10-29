@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col col-md-3 col col-md-offset-4  panel panel-default">
+        <div class="col col-md-4 col col-md-offset-4  panel panel-default">
             @Html.HiddenFor(m => m.Id, new { @class = "question", @id = @Model.Id })
             @Html.HiddenFor(m => m.Author.Id, new { @class = "authorId", @id = @Model.Author.Id })
             <div class="row">
@@ -21,7 +21,7 @@
                 <br />
             </div>
 
-            @*@Html.Partial("_NextQuestionPartial")*@
+            @*@Html.Partial("_MultipleChoiceAuthors")*@
                 
             <div id="binaryOptions">
                 <div class="text-center" id="authors_container">
@@ -58,9 +58,9 @@
             var questionId = $(".question").attr('id');
             var authorId = $(".authorId").attr('id');
             $.ajax({
-                url: "/Home/IsAnswerCorrect",
+                url: "/Home/CheckBinaryAnswer",
                 method: "POST",
-                data: { questionId: questionId, btnValue: id, authorId: authorId },
+                data: { btnValue: id },
                 success: function (data) {
                     $("#result_view").html(data);
                     $("#authors_container").hide();
