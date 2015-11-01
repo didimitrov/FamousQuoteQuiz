@@ -6,9 +6,9 @@ namespace FamousQuoteQuiz.WebClient.ViewModels.HomeController
 {
     public class IndexViewModel
     {
-        public Question Question { get; set; }
+        public QuestionViewModel Question { get; set; }
 
-        public ICollection<Author> Authors { get; set; }
+        public ICollection<AuthorViewModel> Authors { get; set; }
 
     }
 }

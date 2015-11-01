@@ -10,6 +10,6 @@ namespace FamousQuoteQuiz.WebClient.ViewModels.HomeController
 
         public int AuthorId { get; set; }
 
-        public virtual Author Author { get; set; }
+        public string  AuthorName { get; set; }
     }
 }

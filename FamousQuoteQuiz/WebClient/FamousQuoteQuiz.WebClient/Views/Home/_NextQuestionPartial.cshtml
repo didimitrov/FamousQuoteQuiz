@@ -1,18 +1,89 @@
 ﻿@model FamousQuoteQuiz.WebClient.ViewModels.HomeController.QuestionViewModel
 
-@Html.HiddenFor(m => m.Id, new { @class = "nextquestion", @id = @Model.Id })
-@Html.HiddenFor(m => m.Author.Id, new { @class = "authorId", @id = @Model.Author.Id })
+<div id="result">
+    @Html.HiddenFor(m => m.Id, new { @class = "question", @id = @Model.Id })
+    @Html.HiddenFor(m => m.AuthorId, new { @class = "authorId", @id = @Model.AuthorId })
 
-<div class="question panel-body">
-    "@Model.Content"
+    <div class="question panel-body">
+        "@Model.Content"
+    </div>
+    <br />
+
+    <div id="binaryOptions">
+        <div class="text-center" id="authors_container">
+            @Model.AuthorName?
+        </div><br />
+    </div>
 </div>
-<br />
 
-<div class="text-center" id="authors_container">
-    @Model.Author.AuthorName?
-</div><br />
 
-            
+
+
+
+
+
+
+
+
+@*<div id="result_view" class="text-center">
+
+   </div>
+
+    <div id="answerOptions">
+        <div class="col-sm-3 btn btn-xs btn-success" id="true">Yes</div>
+        <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-danger" id="false">No</div><br />
+    </div>
+
+<div class="text-center">
+    <input type="button" name="name" value="Next " class="hiddenElement  btn-info" id="btn_next" />
+</div>*@
+
+<div>
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.hiddenElement').hide();
+        });
+
+        $('.btn').click(function () {
+            var id = $(this).attr('id');
+            var questionId = $(".question").attr('id');
+            var authorId = $(".authorId").attr('id');
+            $.ajax({
+                url: "/Home/CheckBinaryAnswer",
+                method: "POST",
+                data: { btnValue: id, questionId: questionId, authorId: authorId },
+                success: function (data) {
+                    $("#result_view").html(data);
+                    $("#authors_container").hide();
+                    $("#answerOptions").hide();
+                    $("#result_view").show();
+                    $(".hiddenElement").show();
+                }
+            });
+        });
+
+
+        $('#btn_next').click(function () {
+            var questionId = $(".question").attr('id');
+            $.ajax({
+                url: "/Home/GetNext",
+                method: "post",
+                data: { currentQuestionId: questionId },
+                success: function (data) {
+                    $("#result").html(data);
+                    $("#authors_container").show();
+                    $("#result_view").hide();
+                    $("#answerOptions").show();
+                    $(".hiddenElement").hide();
+                }
+            });
+        });
+
+    </script>*@
+</div>
+
 
 
             

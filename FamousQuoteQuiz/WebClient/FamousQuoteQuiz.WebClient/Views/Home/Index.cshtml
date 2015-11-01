@@ -1,10 +1,10 @@
-﻿@model FamousQuoteQuiz.WebClient.ViewModels.HomeController.QuestionViewModel
+﻿@*@model FamousQuoteQuiz.WebClient.ViewModels.HomeController.IndexViewModel*@
 
 <div class="container">
     <div class="row">
         <div class="col col-md-4 col col-md-offset-4  panel panel-default">
-            @Html.HiddenFor(m => m.Id, new { @class = "question", @id = @Model.Id })
-            @Html.HiddenFor(m => m.Author.Id, new { @class = "authorId", @id = @Model.Author.Id })
+            @*@Html.HiddenFor(m => m.Question.Id, new { @class = "question", @id = @Model.Question.Id })*@
+            @*@Html.HiddenFor(m => m.AuthorId, new { @class = "authorId", @id = @Model.AuthorId })*@
             <div class="row">
                 <ul class="nav nav-pills nav-justified">
                     <li role="presentation" class="active"><a href="#" id="Binary"><span class="glyphicon glyphicon-book"></span></a></li>
@@ -14,20 +14,21 @@
 
             <div class="title">Who Said It?</div><br />
 
-            <div id="result">
+            @*<div id="result">
                 <div class="question panel-body">
-                    "@Model.Content"
+                    "@Model.Question.Content"
                 </div>
                 <br />
             </div>
 
-            @*@Html.Partial("_MultipleChoiceAuthors")*@
-                
             <div id="binaryOptions">
                 <div class="text-center" id="authors_container">
-                    @Model.Author.AuthorName?
-                </div><br />
-            </div>
+                    @Model.Question.AuthorName
+            </div><br />
+            </div>*@
+
+            @{ Html.RenderAction("GetNext", "Home"); }
+
                
             <div id="result_view" class="text-center">
 
@@ -37,9 +38,9 @@
                 <div class="col-sm-3 btn btn-xs btn-success" id="true">Yes</div>
                 <div class="col-sm-offset-6 col-sm-3 btn btn-xs btn-danger" id="false">No</div><br />
             </div>
-
+            
             <div class="text-center">
-                <input type="button" name="name" value="Next " class="hiddenElement  btn-info" id="btn_next" />
+                <input type="button" name="name" value="Next " class="hiddenElement btn btn-info" id="btn_next" />
             </div>
             <br />
         </div>
@@ -53,14 +54,17 @@
             $('.hiddenElement').hide();
         });
 
-        $('.btn').click(function () {
+        $('#answerOptions>.btn').click(function () {
             var id = $(this).attr('id');
             var questionId = $(".question").attr('id');
-            var authorId = $(".authorId").attr('id');
+
+            // var authorId = $(".authorId").attr('id');
+           // var authorId = $(this).attr('id').split('-')[1];
+
             $.ajax({
                 url: "/Home/CheckBinaryAnswer",
                 method: "POST",
-                data: { btnValue: id },
+                data: { btnValue: id, questionId: questionId }, //
                 success: function (data) {
                     $("#result_view").html(data);
                     $("#authors_container").hide();
@@ -70,35 +74,59 @@
                 }
             });
         });
-
+        
         $('#btn_next').click(function () {
             var questionId = $(".question").attr('id');
             $.ajax({
-                url: "/Home/GetNext", 
-                method: "post",    
+                url: "/Home/GetNext",
+                method: "get",
                 data: { currentQuestionId: questionId },
-                success: function (data) {
+                success: function(data) {
                     $("#result").html(data);
                     $("#authors_container").show();
                     $("#result_view").hide();
                     $("#answerOptions").show();
                     $(".hiddenElement").hide();
+                    $('#Multi').removeClass('active');
                 }
             });
         });
+        
 
-        $('#Multi').one('click', function () {
-            var authorId = $(".authorId").attr('id');
+        //$('.authorss').click(function () {
+        //    alert('hi');
+        //    var authorId = $(this).attr('id').split('-')[1];
+        //    var questionId = $(".question").attr('id');
+        //    $.ajax({
+        //        url: "/Home/CheckMultipleAnswer",
+        //        method: "get",
+        //        data: {questionId: questionId , authorId:authorId},
+        //        success: function(data) {
+        //            $("#result").html(data);
+        //            $("#authors_container").show();
+        //            $("#result_view").hide();
+        //         //   $("#answerOptions").show();
+        //            $(".hiddenElement").hide();
+        //        }
+        //    });
+        //});
+
+
+        $('#Multi').on('click', function () {
+            // var authorId = $(".authorId").attr('id');
+          
+            var currQuestionId =$(".question").attr('id');
             $.ajax({
                 url: "/Home/MultipleChoice",
                 method: "post",
-                data: { currentAuthorId: authorId },
+                data: { currQuestionId: currQuestionId },
                 success: function(data) {
                     $("#binaryOptions").html(data);
                     $("#answerOptions").hide();
                     $("#authors_container").hide();
                     $(".hiddenElement").hide();
                     $("#result_view").hide();
+
                 }
             });
         });
@@ -113,12 +141,12 @@
             });
         });
 
-        $(function () {
-            $("li").click(function () {
-                $("li").removeClass("active");
-                $(this).addClass("active");
-            });
-        });
+        //$(function () {
+        //    $("li").click(function () {
+        //        $("li").removeClass("active");
+        //        $(this).addClass("active");
+        //    });
+        //});
 
     </script>
 }

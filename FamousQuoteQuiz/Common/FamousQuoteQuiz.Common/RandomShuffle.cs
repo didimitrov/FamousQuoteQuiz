@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FamousQuoteQuiz.Common
 {
-    public class RandomShuffle
+    public class RandomGenerator
     {
         private static Random rng = new Random();
 
@@ -21,6 +22,16 @@ namespace FamousQuoteQuiz.Common
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public int GetRandomIndex(ICollection sequence, int id)
+        {
+            var exclude = new HashSet<int> {(int) id};
+            var range = Enumerable.Range(1, sequence.Count).Where(i => !exclude.Contains(i));
+            int index = rng.Next(1, sequence.Count - exclude.Count);
+            var newIndex = range.ElementAt(index);
+
+            return newIndex;
         }
     }
 }

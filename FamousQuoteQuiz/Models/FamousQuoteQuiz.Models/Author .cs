@@ -18,9 +18,13 @@ namespace FamousQuoteQuiz.Models
         public int Id { get; set; }
 
         public string AuthorName { get; set; }
-        
-        public virtual ICollection<Question> Questions { get; set; }
 
-       // public bool IsCorrect { get; set; }
+        public virtual ICollection<Question> Questions
+        {
+            get { return this._questions; }
+            set { this._questions = value; }
+        }
+
+        // public bool IsCorrect { get; set; }
     }
 }
