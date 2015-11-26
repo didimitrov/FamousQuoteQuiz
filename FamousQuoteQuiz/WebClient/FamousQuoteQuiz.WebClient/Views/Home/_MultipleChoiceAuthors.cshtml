@@ -7,40 +7,29 @@
         <p>
             <button id="authorIdd-@item.Id" class=" btn btn-default authorss">@item.AuthorName</button>
         </p>
-        
-         @*<p>
-        @Html.ActionLink(@item.AuthorName, "MultipleChoiceAnswerCheck", new { id = item.Id }, new { @class = " btn btn-info", @id = "authorId-"+@item.Id })
-
-    </p>*@
 
     }
 </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-    <script>
-        $(document).ready(function() {
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script>
+    $(document).ready(function() {
 
-            $('.authorss').click(function() {
-                //  alert('hi');
-                var authorId = $(this).attr('id').split('-')[1];
-                var questionId = $(".question").attr('id');
-                $.ajax({
-                    url: "/Home/CheckBinaryAnswer",
-                    method: "post",
-                    data: { questionId: questionId, authorId: authorId },
-                    success: function(data) {
-                        $("#binaryOptions").html(data);
-                        $("#authors_container").show();
-                        $("#result_view").hide();
-                        //   $("#answerOptions").show();
-                        $(".hiddenElement").show();
-
-
-                        //$('#Multi').removeClass("active");
-                        //$("#Binary").addClass("active");
-                    }
-                });
+        $('.authorss').click(function() {
+            var authorId = $(this).attr('id').split('-')[1];
+            var questionId = $(".question").attr('id');
+            $.ajax({
+                url: "/Home/CheckBinaryAnswer",
+                method: "post",
+                data: { questionId: questionId, authorId: authorId },
+                success: function(data) {
+                    $("#binaryOptions").html(data);
+                    $("#authors_container").show();
+                    $("#result_view").hide();
+                    $(".hiddenElement").show();
+                }
             });
         });
-    </script>
+    });
+</script>

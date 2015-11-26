@@ -8,7 +8,7 @@ namespace FamousQuoteQuiz.WebClient.ViewModels.HomeController
     {
         public QuestionViewModel Question { get; set; }
 
-        public ICollection<AuthorViewModel> Authors { get; set; }
+        public IList<Author> Authors { get; set; }
 
     }
 }

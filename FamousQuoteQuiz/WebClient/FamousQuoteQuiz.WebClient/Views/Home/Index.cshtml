@@ -1,10 +1,7 @@
 ﻿@*@model FamousQuoteQuiz.WebClient.ViewModels.HomeController.IndexViewModel*@
-
 <div class="container">
     <div class="row">
         <div class="col col-md-4 col col-md-offset-4  panel panel-default">
-            @*@Html.HiddenFor(m => m.Question.Id, new { @class = "question", @id = @Model.Question.Id })*@
-            @*@Html.HiddenFor(m => m.AuthorId, new { @class = "authorId", @id = @Model.AuthorId })*@
             <div class="row">
                 <ul class="nav nav-pills nav-justified">
                     <li role="presentation" class="active"><a href="#" id="Binary"><span class="glyphicon glyphicon-book"></span></a></li>
@@ -13,19 +10,6 @@
             </div><br />
 
             <div class="title">Who Said It?</div><br />
-
-            @*<div id="result">
-                <div class="question panel-body">
-                    "@Model.Question.Content"
-                </div>
-                <br />
-            </div>
-
-            <div id="binaryOptions">
-                <div class="text-center" id="authors_container">
-                    @Model.Question.AuthorName
-            </div><br />
-            </div>*@
 
             @{ Html.RenderAction("GetNext", "Home"); }
 
@@ -50,22 +34,22 @@
 @section scripts{
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('.hiddenElement').hide();
         });
 
-        $('#answerOptions>.btn').click(function () {
+        $('#answerOptions > .btn').click(function() {
             var id = $(this).attr('id');
             var questionId = $(".question").attr('id');
 
             // var authorId = $(".authorId").attr('id');
-           // var authorId = $(this).attr('id').split('-')[1];
+            // var authorId = $(this).attr('id').split('-')[1];
 
             $.ajax({
                 url: "/Home/CheckBinaryAnswer",
                 method: "POST",
                 data: { btnValue: id, questionId: questionId }, //
-                success: function (data) {
+                success: function(data) {
                     $("#result_view").html(data);
                     $("#authors_container").hide();
                     $("#answerOptions").hide();
@@ -74,8 +58,8 @@
                 }
             });
         });
-        
-        $('#btn_next').click(function () {
+
+        $('#btn_next').click(function() {
             var questionId = $(".question").attr('id');
             $.ajax({
                 url: "/Home/GetNext",
@@ -91,31 +75,11 @@
                 }
             });
         });
-        
 
-        //$('.authorss').click(function () {
-        //    alert('hi');
-        //    var authorId = $(this).attr('id').split('-')[1];
-        //    var questionId = $(".question").attr('id');
-        //    $.ajax({
-        //        url: "/Home/CheckMultipleAnswer",
-        //        method: "get",
-        //        data: {questionId: questionId , authorId:authorId},
-        //        success: function(data) {
-        //            $("#result").html(data);
-        //            $("#authors_container").show();
-        //            $("#result_view").hide();
-        //         //   $("#answerOptions").show();
-        //            $(".hiddenElement").hide();
-        //        }
-        //    });
-        //});
-
-
-        $('#Multi').on('click', function () {
+        $('#Multi').on('click', function() {
             // var authorId = $(".authorId").attr('id');
-          
-            var currQuestionId =$(".question").attr('id');
+
+            var currQuestionId = $(".question").attr('id');
             $.ajax({
                 url: "/Home/MultipleChoice",
                 method: "post",
@@ -126,16 +90,15 @@
                     $("#authors_container").hide();
                     $(".hiddenElement").hide();
                     $("#result_view").hide();
-
                 }
             });
         });
 
-        $('#Binary').one('click',function() {
+        $('#Binary').one('click', function() {
             $.ajax({
                 url: "/Home/Index",
                 method: "get",
-                success: function (data) {
+                success: function(data) {
                     $('body').html(data);
                 }
             });
